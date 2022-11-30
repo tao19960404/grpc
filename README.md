@@ -1,90 +1,123 @@
-# Welcome to GitHub
+# Welcome 
 
-Welcome to GitHub—where millions of developers work together on software. Ready to get started? Let’s learn how this all works by building and publishing your first GitHub Pages website!
+The Modifications of innius-simple-grpc-datasource,Time stamps used to support only seconds,I change it's timestamp to milliseconds.
+The usage is the same as before:
+# Grafana Simple gRPC Datasource Plugin
 
-## Repositories
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/innius/grafana-simple-grpc-datasource?logo=github)
+[![Marketplace](https://img.shields.io/badge/dynamic/json?logo=grafana&color=F47A20&label=marketplace&prefix=v&query=version&url=https%3A%2F%2Fgrafana.com%2Fapi%2Fplugins%2Finnius-grpc-datasource)](https://grafana.com/grafana/plugins/innius-grpc-datasource)
+[![Downloads](https://img.shields.io/badge/dynamic/json?logo=grafana&color=F47A20&label=downloads&query=downloads&url=https%3A%2F%2Fgrafana.com%2Fapi%2Fplugins%2Finnius-grpc-datasource)](https://grafana.com/grafana/plugins/innius-grpc-datasource)
 
-Right now, we’re in your first GitHub **repository**. A repository is like a folder or storage space for your project. Your project's repository contains all its files such as code, documentation, images, and more. It also tracks every change that you—or your collaborators—make to each file, so you can always go back to previous versions of your project if you make any mistakes.
+## What is this plugin?
 
-This repository contains three important files: The HTML code for your first website on GitHub, the CSS stylesheet that decorates your website with colors and fonts, and the **README** file. It also contains an image folder, with one image file.
+This back-end Grafana datasource plugin provides a user-friendly grafana experience with only a handful simple and generic parameters to configure.
+It comes with a dedicated API specification that requires implementation in the data provider's back-end.
+Implementing this API helps to decouple the front-end visualisation solution from the back-end data-layer implementation,
+leaving developers with the necessary freedom to update and improve the back-end without breaking the end-user experience.
 
-## Describe your project
+The protobuf API specification can be found in the pkg/proto directory.
+On configuring the datasource plugin, the end-user provides an endpoint URL and optionally an API key too. The datasource will
+attempt to establish a gRPC connection and emit calls to the given endpoint according to the API specification.
 
-You are currently viewing your project's **README** file. **_README_** files are like cover pages or elevator pitches for your project. They are written in plain text or [Markdown language](https://guides.github.com/features/mastering-markdown/), and usually include a paragraph describing the project, directions on how to use it, who authored it, and more.
+For more information on gRPC or protobuf, see the [gRPC docs](https://grpc.io/docs/).
 
-[Learn more about READMEs](https://help.github.com/en/articles/about-readmes)
+#### Why gRPC?
+gRPC is a fast & efficient framework for inter-service communication and provides a fool-proof and streamlined workflow for API implementation through protobuf.
 
-## Your first website
+gRPC also supports all essential streaming capabilities, which can be implemented in future releases.
 
-**GitHub Pages** is a free and easy way to create a website using the code that lives in your GitHub repositories. You can use GitHub Pages to build a portfolio of your work, create a personal website, or share a fun project that you coded with the world. GitHub Pages is automatically enabled in this repository, but when you create new repositories in the future, the steps to launch a GitHub Pages website will be slightly different.
+#### Security
 
-[Learn more about GitHub Pages](https://pages.github.com/)
+The datasource plugin establishes a secure gRPC connection through TLS. 
+Additionally, the datasource supports API-key authorization. The API-key will be included in each API call as part of the call metadata.
 
-## Rename this repository to publish your site
+##  Usage
+![screenshot](https://raw.githubusercontent.com/innius/grafana-simple-grpc-datasource/master/src/img/screenshots/image-1.png)
 
-We've already set-up a GitHub Pages website for you, based on your personal username. This repository is called `hello-world`, but you'll rename it to: `username.github.io`, to match your website's URL address. If the first part of the repository doesn’t exactly match your username, it won’t work, so make sure to get it right.
+#### Metric
+The variable that is updated with new values as the stream of timeseries datapoints is appended.
 
-Let's get started! To update this repository’s name, click the `Settings` tab on this page. This will take you to your repository’s settings page. 
+#### Dimension
+A dimension is an optional, identifying property of the measure. Each dimension is modeled as a key-value pair. 
+A measure can have zero or many dimensions that collectively uniquely identify it.
 
-![repo-settings-image](https://user-images.githubusercontent.com/18093541/63130482-99e6ad80-bf88-11e9-99a1-d3cf1660b47e.png)
+#### Query Type
 
-Under the **Repository Name** heading, type: `username.github.io`, where username is your username on GitHub. Then click **Rename**—and that’s it. When you’re done, click your repository name or browser’s back button to return to this page.
+| type | description |
+| --- | --- |
+| Get Metric History | gets historical timeseries values |
+| Get Metric Aggregate | gets aggregated timeseries |  
+| Get Metric Value | gets the last known value |  
 
-<img width="1039" alt="rename_screenshot" src="https://user-images.githubusercontent.com/18093541/63129466-956cc580-bf85-11e9-92d8-b028dd483fa5.png">
 
-Once you click **Rename**, your website will automatically be published at: https://your-username.github.io/. The HTML file—called `index.html`—is rendered as the home page and you'll be making changes to this file in the next step.
-
-Congratulations! You just launched your first GitHub Pages website. It's now live to share with the entire world
-
-## Making your first edit
-
-When you make any change to any file in your project, you’re making a **commit**. If you fix a typo, update a filename, or edit your code, you can add it to GitHub as a commit. Your commits represent your project’s entire history—and they’re all saved in your project’s repository.
-
-With each commit, you have the opportunity to write a **commit message**, a short, meaningful comment describing the change you’re making to a file. So you always know exactly what changed, no matter when you return to a commit.
-
-## Practice: Customize your first GitHub website by writing HTML code
-
-Want to edit the site you just published? Let’s practice commits by introducing yourself in your `index.html` file. Don’t worry about getting it right the first time—you can always build on your introduction later.
-
-Let’s start with this template:
-
+## Getting started
+1. start a sample grpc server locally:
 ```
-<p>Hello World! I’m [username]. This is my website!</p>
+docker run -p 50051:50051 innius/sample-grpc-server
 ```
+   
+2. install the aa15702450368-grpc-datasource
 
-To add your introduction, copy our template and click the edit pencil icon at the top right hand corner of the `index.html` file.
+3. enable the datasource 
+    - configure the endpoint `localhost:50051`
+    
+4. configure dashboards 
 
-<img width="997" alt="edit-this-file" src="https://user-images.githubusercontent.com/18093541/63131820-0794d880-bf8d-11e9-8b3d-c096355e9389.png">
+## Implement your own backend API 
 
+This datasource plugin expects a backend to implement the [Simple][1] or the [Advanced][2] interface. 
 
-Delete this placeholder line:
+### The Simple API ([GrafanaQueryAPI][1])
 
-```
-<p>Welcome to your first GitHub Pages website!</p>
-```
+This API provides the following operations:
 
-Then, paste the template to line 15 and fill in the blanks.
+| name                | description                                                         | 
+|---------------------|---------------------------------------------------------------------|
+| ListDimensionKeys   | Returns a list of all available dimension keys                      |
+| ListDimensionValues | Returns a list of all available dimension values of a dimension key |
+| ListMetrics         | Returns a list of all metrics for a combination of dimensions.      |
+| GetMetricValue      | Returns the last known value of a metric.                           |
+| GetMetricHistory    | Returns historical values of a metric                               |
+| GetMetricAggregate  | Returns aggregated metric values                                    |
 
-<img width="1032" alt="edit-githuboctocat-index" src="https://user-images.githubusercontent.com/18093541/63132339-c3a2d300-bf8e-11e9-8222-59c2702f6c42.png">
+A sample implementation can be found [here](https://bitbucket.org/innius/sample-grpc-server/src/master/).
 
+This API has some limitations: 
+- it only supports one metric per query 
+- it does not support variables with multiple options 
+- it does not support enhanced metadata for metrics (like unit, etc.)
 
-When you’re done, scroll down to the `Commit changes` section near the bottom of the edit page. Add a short message explaining your change, like "Add my introduction", then click `Commit changes`.
+### The Advanced API ([GrafanaQueryAPIV2][2])
 
+This API provides almost the same operations as the Simple API but with one major difference: it supports multiple metrics 
+for the same query. As a result this API integrates seamlessly with grafana templating capabilities. 
+In addition, it supports enhanced metric metadata, like unit of measure. Another difference is that it supports grafana labels. 
 
-<img width="1030" alt="add-my-username" src="https://user-images.githubusercontent.com/18093541/63131801-efbd5480-bf8c-11e9-9806-89273f027d16.png">
+This API provides the following operations:
 
-Once you click `Commit changes`, your changes will automatically be published on your GitHub Pages website. Refresh the page to see your new changes live in action.
+| name                | description                                                         | 
+|---------------------|---------------------------------------------------------------------|
+| ListDimensionKeys   | Returns a list of all available dimension keys                      |
+| ListDimensionValues | Returns a list of all available dimension values of a dimension key |
+| ListMetrics         | Returns a list of all metrics for a combination of dimensions.      |
+| GetMetricValue      | Returns the last known value for one or more metrics.               |
+| GetMetricHistory    | Returns historical values for one or more metrics                   |
+| GetMetricAggregate  | Returns aggregated values for one or more metrics                   |
 
-:tada: You just made your first commit! :tada:
+A sample implementation can be found [here](https://bitbucket.org/innius/sample-grpc-server/src/master/).
 
-## Extra Credit: Keep on building!
+#### Example Use Cases: 
+- different time series for the same metric with different labels. For example: the temperature measure is a room. The room has four zones: north, south, east and west. The V1 API does not support this unless there are four different metrics defined for each temperature / zone combination. 
+The V2 API does support this scenario by returning multiple time series for the same metric `temperature`, each annotated with different label `zone`. 
+- different time series for different metrics. For example: a room has multiple temperature sensors. The V1 API supports this by defining multiple queries for each metric. 
+The V2 API can do this with a single query. 
 
-Change the placeholder Octocat gif on your GitHub Pages website by [creating your own personal Octocat emoji](https://myoctocat.com/build-your-octocat/) or [choose a different Octocat gif from our logo library here](https://octodex.github.com/). Add that image to line 12 of your `index.html` file, in place of the `<img src=` link.
+Important Note: in order to use the V2 API the backend server needs to support [gRPC Reflection][3]. The plugin uses this to determine if a backend supports the V2 protocol. If V2 is not supported it falls back on the Simple API implementation. 
 
-Want to add even more code and fun styles to your GitHub Pages website? [Follow these instructions](https://github.com/github/personal-website) to build a fully-fledged static website.
+Please note gRPC is programming language agnostic which makes it possible to implement a backend in the language of your choice. Checkout the gRPC [documentation](https://grpc.io/docs/languages/) of your language.
 
-![octocat](./images/create-octocat.png)
+## Roadmap
 
-## Everything you need to know about GitHub
-
-Getting started is the hardest part. If there’s anything you’d like to know as you get started with GitHub, try searching [GitHub Help](https://help.github.com). Our documentation has tutorials on everything from changing your repository settings to configuring GitHub from your command line.
+- add more authentication schemes (certificates, basic authentication etc. )
+- support annotations
+- support streaming queries 
