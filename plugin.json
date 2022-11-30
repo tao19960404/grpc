@@ -1,0 +1,51 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "datasource",
+  "name": "hzzx grpc datasource",
+  "id": "hzzx-grpc-datasource",
+  "metrics": true,
+  "backend": true,
+  "executable": "gpx_my-plugin",
+  "alerting": true,
+  "queryOptions": {
+    "cacheTimeout": true,
+    "maxDataPoints": true,
+    "minInterval": true
+  },
+  "info": {
+    "description": "hzzx grpc datasource plugin",
+    "author": {
+      "name": "hzzx",
+      "url": "https://github.com/tao19960404/grpc"
+    },
+    "keywords": [
+      "grpc"
+    ],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "License",
+        "url": "https://github.com/tao19960404/grpc/LICENSE"
+      }
+    ],
+    "screenshots": [
+      {
+        "name": "Datasource Configuration",
+        "path": "img/screenshots/image-2.png"
+      },
+      {
+        "name": "Query Editor",
+        "path": "img/screenshots/image-1.png"
+      }
+    ],
+    "version": "1.0",
+    "updated": "2022-11-30"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=7.0.0",
+    "plugins": []
+  }
+}
